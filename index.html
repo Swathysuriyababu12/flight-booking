@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flight Booking App</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* Add some custom styles */
+        body {
+            background-color: #e9ecef;
+            /* Light gray background */
+        }
+
+        .header,
+        .footer,
+        .navbar {
+            background-color: #007bff;
+            /* Blue background for header, footer, and navbar */
+            color: white;
+        }
+
+        .header {
+            padding: 10px 0;
+            /* Padding for header */
+            text-align: center;
+        }
+
+        .suggestions-box {
+            border: 1px solid #ced4da;
+            max-height: 150px;
+            overflow-y: auto;
+            z-index: 10;
+            /* Ensure suggestions appear above other elements */
+            position: absolute;
+            background-color: white;
+            /* Set a background for suggestions */
+            width: calc(100% - 2rem);
+            /* Match width with input box, minus padding */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .suggestion-item {
+            padding: 10px;
+            cursor: pointer;
+        }
+
+        .suggestion-item:hover {
+            background-color: #f1f1f1;
+            /* Highlight on hover */
+        }
+
+        .form-container {
+            margin: 20px auto;
+            /* Center the form */
+            max-width: 500px;
+            /* Limit the width of the form */
+            padding: 20px;
+            /* Padding for form */
+            background-color: white;
+            /* White background for form */
+            border-radius: 8px;
+            /* Rounded corners */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            /* Shadow for form */
+        }
+
+        .btn-primary {
+            background-color: #007bff;
+            /* Custom blue color */
+            border: none;
+        }
+
+        .btn-primary:hover {
+            background-color: #0056b3;
+            /* Darker blue on hover */
+        }
+
+        .form-group {
+            position: relative;
+            /* For suggestions positioning */
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <a class="navbar-brand" href="#">FlightBooker</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">About</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Contact</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+  
+
+    <div class="container form-container">
+        <h2 class="text-center">Book Your Flight</h2>
+        <form id="flightForm" class="mt-4">
+            <div class="form-group">
+                <label for="country">Country</label>
+                <input type="text" id="country" class="form-control" placeholder="Type to search for a country..."
+                    required>
+                <div id="countrySuggestions" class="suggestions-box"></div>
+            </div>
+            <div class="form-group">
+                <label for="departure">Departure City</label>
+                <input type="text" id="departure" class="form-control"
+                    placeholder="Type to search for a departure city..." required>
+                <div id="departureSuggestions" class="suggestions-box"></div>
+            </div>
+            <div class="form-group">
+                <label for="destination">Arrival City</label>
+                <input type="text" id="destination" class="form-control"
+                    placeholder="Type to search for an arrival city..." required>
+                <div id="destinationSuggestions" class="suggestions-box"></div>
+            </div>
+            <div class="form-group">
+                <label for="departureDate">Departure Date</label>
+                <input type="date" id="departureDate" class="form-control" required>
+            </div>
+            <div class="form-group">
+                <label for="returnDate">Return Date</label>
+                <input type="date" id="returnDate" class="form-control">
+            </div>
+            <button type="submit" class="btn btn-primary btn-block">Search Flights</button>
+        </form>
+    </div>
+
+    <!-- Modal for Flight Results -->
+    <div class="modal fade" id="flightModal" tabindex="-1" aria-labelledby="flightModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="flightModalLabel">Available Flights</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span>&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th>Flight</th>
+                                <th>Departure</th>
+                                <th>Destination</th>
+                                <th>Date</th>
+                                <th>Price</th>
+                            </tr>
+                        </thead>
+                        <tbody id="flightTableBody">
+                            <!-- Flight results will be populated here -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer text-center">
+        <div class="container">
+            <p class="mb-0">© 2024 FlightBooker. All Rights Reserved.</p>
+            <p><a href="#" class="text-white">Privacy Policy</a> | <a href="#" class="text-white">Terms of Service</a>
+            </p>
+        </div>
+    </footer>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="script.js"></script>
+</body>
+
+</html>

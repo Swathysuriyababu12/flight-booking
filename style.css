@@ -1,0 +1,60 @@
+ body {
+     background-color: #e9ecef;
+     /* Light gray background */
+ }
+
+ .suggestions-box {
+     border: 1px solid #ced4da;
+     max-height: 150px;
+     overflow-y: auto;
+     z-index: 10;
+     /* Ensure suggestions appear above other elements */
+     position: absolute;
+     background-color: white;
+     /* Set a background for suggestions */
+     width: calc(100% - 2rem);
+     /* Match width with input box, minus padding */
+     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+ }
+
+ .suggestion-item {
+     padding: 10px;
+     cursor: pointer;
+ }
+
+ .suggestion-item:hover {
+     background-color: #f1f1f1;
+     /* Highlight on hover */
+ }
+
+ .form-container {
+     margin-top: 30px;
+     /* Margin above form */
+ }
+
+ .footer {
+     background-color: #343a40;
+     /* Dark background for footer */
+     color: white;
+     padding: 20px 0;
+     /* Padding for footer */
+     position: relative;
+     bottom: 0;
+     width: 100%;
+ }
+
+ .btn-primary {
+     background-color: #007bff;
+     /* Custom blue color */
+     border: none;
+ }
+
+ .btn-primary:hover {
+     background-color: #0056b3;
+     /* Darker blue on hover */
+ }
+
+ .form-group {
+     position: relative;
+     /* For suggestions positioning */
+ }
